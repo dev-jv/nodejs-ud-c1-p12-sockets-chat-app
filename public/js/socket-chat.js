@@ -11,7 +11,7 @@ let user = {
     name: params.get('name')
 };
 
-socket.on('connect', function () {
+socket.on('connect', () => {
     console.log('Connected > Server');
 
     socket.emit('joinToChat', user, (x) => {
@@ -19,10 +19,14 @@ socket.on('connect', function () {
     });
 });
 
-socket.on('diconnect', function() {
+socket.on('diconnect', () => {
     console.log('Disconnected > Server');
 });
 
-socket.on('send-msg', function (msg) {
-    console.log('Server: ', msg);
+socket.on('userlefttheroom', (x) => {
+    console.log('Server: ', x.msg);
+});
+
+socket.on('connectedusers', (x) => {
+    console.log('Connected users: ', x);
 });

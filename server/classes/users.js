@@ -13,7 +13,7 @@ class Users {
 
     getPerson(id) {
         let person = this.persons.filter(person => person.id === id)[0];
-        return this.persons;
+        return person;
     }
 
     getPersons() {

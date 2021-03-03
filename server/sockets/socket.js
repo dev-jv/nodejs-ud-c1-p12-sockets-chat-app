@@ -10,16 +10,16 @@ io.on('connect', socketClient => { // "connection" event
 
     console.log('Connected client'.gray, socketClient.id);
 
-    socketClient.on('joinToChat', (user, callback) => {
+    socketClient.on('join-to-chat', (user, callback) => {
         // console.log(user);
-        if(!user.name) {
+        if (!user.name) {
             return callback({
-               error: true,
-               msg: 'Required name'
+                error: true,
+                msg: 'Required name'
             });
         }
         const persons = users.addPerson(socketClient.id, user.name);
-        socketClient.broadcast.emit('connectedusers', users.getPersons());
+        socketClient.broadcast.emit('connected-users', users.getPersons());
         callback(persons);
 
         console.log('PERSONS'.brightWhite, users.persons);
@@ -35,8 +35,13 @@ io.on('connect', socketClient => { // "connection" event
     socketClient.on('disconnect', () => {
         const deletedPerson = users.deletePerson(socketClient.id);
         socketClient.broadcast.emit('send-message', message('administrator', `${deletedPerson.name} left the chat..`));
-        socketClient.broadcast.emit('connectedusers', users.getPersons());
+        socketClient.broadcast.emit('connected-users', users.getPersons());
         console.log('DELETED '.bgWhite.black, deletedPerson);
         // console.log('Diconnected client'.brightWhite, socketClient.id);
+    });
+
+    socketClient.on('private-message', data => {
+        const user = users.getPerson(socketClient.id);
+        socketClient.broadcast.to(data.to).emit('private-message', message(user.name, data.msg)); // data.to, to.. is a ref.
     });
 });

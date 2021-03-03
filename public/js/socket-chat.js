@@ -14,7 +14,7 @@ let user = {
 socket.on('connect', () => {
     console.log('Connected > Server');
 
-    socket.emit('joinToChat', user, (x) => {
+    socket.emit('join-to-chat', user, (x) => {
         console.log('Connected users', x);
     });
 });
@@ -30,10 +30,20 @@ socket.on('diconnect', () => {
 //     console.log('Server: ', x);
 // });
 
+// socket.emit('private-message', {
+//     name: 'September',
+//     msg: 'here!',
+//     to: '1ycqyLjQ6QrNGk8sAAAH'
+// });
+
 socket.on('send-message', (x) => {
     console.log('Server: ', x);
 });
 
-socket.on('connectedusers', (x) => {
+socket.on('connected-users', (x) => {
     console.log('Connected users: ', x);
+});
+
+socket.on('private-message', (msg) => {
+    console.log('Private message: ', msg);
 });

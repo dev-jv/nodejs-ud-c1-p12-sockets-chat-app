@@ -5,8 +5,8 @@ class Users {
         this.persons = [];
     }
 
-    addPerson(id, name) {
-        let person = {id, name};
+    addPerson(id, name, room) {
+        let person = {id, name, room};
         this.persons.push(person);
         return this.persons;
     }

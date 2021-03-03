@@ -11,14 +11,17 @@ io.on('connect', socketClient => { // "connection" event
     console.log('Connected client'.gray, socketClient.id);
 
     socketClient.on('join-to-chat', (user, callback) => {
-        // console.log(user);
-        if (!user.name) {
+        console.log(user);
+        if (!user.name || !user.room) {
             return callback({
                 error: true,
-                msg: 'Required name'
+                msg: 'Name and room are required'
             });
         }
-        const persons = users.addPerson(socketClient.id, user.name);
+
+        socketClient.join(user.room);
+
+        const persons = users.addPerson(socketClient.id, user.name, user.room);
         socketClient.broadcast.emit('connected-users', users.getPersons());
         callback(persons);
 

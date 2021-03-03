@@ -2,13 +2,14 @@
 const socket = io();
 
 let params = new URLSearchParams(window.location.search);
-if(!params.has('name')) {
+if(!params.has('name') || !params.has('room')) {
     window.location = 'index.html';
-    throw new Error('A name is required');
+    throw new Error('A name and room are required');
 }
 
 let user = {
-    name: params.get('name')
+    name: params.get('name'),
+    room: params.get('room')
 };
 
 socket.on('connect', () => {
@@ -36,7 +37,7 @@ socket.on('diconnect', () => {
 //     to: '1ycqyLjQ6QrNGk8sAAAH'
 // });
 
-socket.on('send-message', (x) => {
+socket.on('send-message', x => {
     console.log('Server: ', x);
 });
 
@@ -44,6 +45,6 @@ socket.on('connected-users', (x) => {
     console.log('Connected users: ', x);
 });
 
-socket.on('private-message', (msg) => {
-    console.log('Private message: ', msg);
+socket.on('private-message', (x) => {
+    console.log('Private message: ', x);
 });

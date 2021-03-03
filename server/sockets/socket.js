@@ -1,18 +1,31 @@
 const colors = require('colors');
 
-const {io} =require('../server');
+const {io} = require('../server');
+const {Users} = require('../classes/users');
+
+const users = new Users();
 
 io.on('connect', socketClient => { // "connection" event
 
     console.log('Connected client'.gray, socketClient.id);
 
-    socketClient.on('disconnect', () => {
-        console.log('Diconnected client'.brightWhite, socketClient.id);
-    });
+    socketClient.on('joinToChat', (user, callback) => {
+        console.log(user);
+        if(!user.name) {
+            return callback({
+               error: true,
+               msg: 'Required name'
+            });
+        }
+        const persons = users.addPerson(socketClient.id, user.name);
 
-    socketClient.on('send-msg', (payload, callback) => {
-        const id = 123456;
-        socketClient.broadcast.emit('send-msg', payload);
-        callback({id: id, mss: "DB response"});
-    });
+        callback(persons);
+
+    })
+
+    // socketClient.on('disconnect', () => {
+    //     //     console.log('Diconnected client'.brightWhite, socketClient.id);
+    //     // });
+
+
 });

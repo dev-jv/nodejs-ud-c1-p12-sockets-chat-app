@@ -1,0 +1,24 @@
+{
+  "name": "nodejs-ud-c1-p12-sockets-chat-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dev-jv/nodejs-ud-c1-p12-sockets-chat-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dev-jv/nodejs-ud-c1-p12-sockets-chat-app/issues"
+  },
+  "homepage": "https://github.com/dev-jv/nodejs-ud-c1-p12-sockets-chat-app#readme",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "express": "^4.17.1",
+    "socket.io": "^3.1.2"
+  }
+}

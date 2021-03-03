@@ -23,8 +23,15 @@ socket.on('diconnect', () => {
     console.log('Disconnected > Server');
 });
 
-socket.on('userlefttheroom', (x) => {
-    console.log('Server: ', x.msg);
+// socket.emit('send-message', {
+//     name: 'Drac',
+//     msg: 'blaaa bla bla blaaah!!. '
+// }, (x) => {
+//     console.log('Server: ', x);
+// });
+
+socket.on('send-message', (x) => {
+    console.log('Server: ', x);
 });
 
 socket.on('connectedusers', (x) => {

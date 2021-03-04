@@ -27,11 +27,12 @@ io.on('connect', socketClient => { // "connection" event
 
         console.log('PERSONS'.brightWhite, users.persons);
     });
-    socketClient.on('send-message', (data) => {
+    socketClient.on('send-message', (data, callback) => {
         const user = users.getPerson(socketClient.id);
         // let msg = message(data.name, data.msg);
         const msg = message(user.name, data.msg);
         socketClient.broadcast.to(user.room).emit('send-message', msg);
+        callback(msg);
     });
 
     socketClient.on('disconnect', () => {

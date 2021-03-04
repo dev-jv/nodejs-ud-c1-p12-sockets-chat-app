@@ -39,7 +39,8 @@ socket.on('diconnect', () => {
 // });
 
 socket.on('send-message', x => {
-    console.log('Server: ', x);
+    // console.log('Server: ', x);
+    renderMessages(x);
 });
 
 socket.on('connected-users', (x) => {

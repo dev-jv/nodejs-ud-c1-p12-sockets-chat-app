@@ -21,24 +21,23 @@ io.on('connect', socketClient => { // "connection" event
 
         socketClient.join(user.room);
 
-        const persons = users.addPerson(socketClient.id, user.name, user.room);
-        socketClient.broadcast.emit('connected-users', users.getPersons());
-        callback(persons);
+        users.addPerson(socketClient.id, user.name, user.room);
+        socketClient.broadcast.to(user.room).emit('connected-users', users.getPersonsByRoom(user.room));
+        callback(users.getPersonsByRoom(user.room));
 
         console.log('PERSONS'.brightWhite, users.persons);
     });
-
     socketClient.on('send-message', (data) => {
         const user = users.getPerson(socketClient.id);
         // let msg = message(data.name, data.msg);
         const msg = message(user.name, data.msg);
-        socketClient.broadcast.emit('send-message', msg);
+        socketClient.broadcast.to(user.room).emit('send-message', msg);
     });
 
     socketClient.on('disconnect', () => {
         const deletedPerson = users.deletePerson(socketClient.id);
-        socketClient.broadcast.emit('send-message', message('administrator', `${deletedPerson.name} left the chat..`));
-        socketClient.broadcast.emit('connected-users', users.getPersons());
+        socketClient.broadcast.to(deletedPerson.room).emit('send-message', message('administrator', `${deletedPerson.name} left the chat..`));
+        socketClient.broadcast.to(deletedPerson.room).emit('connected-users', users.getPersonsByRoom(deletedPerson.room));
         console.log('DELETED '.bgWhite.black, deletedPerson);
         // console.log('Diconnected client'.brightWhite, socketClient.id);
     });

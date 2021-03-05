@@ -11,7 +11,7 @@ io.on('connect', socketClient => { // "connection" event
     console.log('Connected client'.gray, socketClient.id);
 
     socketClient.on('join-to-chat', (user, callback) => {
-        console.log(user);
+        // console.log(user);
         if (!user.name || !user.room) {
             return callback({
                 error: true,
@@ -23,10 +23,12 @@ io.on('connect', socketClient => { // "connection" event
 
         users.addPerson(socketClient.id, user.name, user.room);
         socketClient.broadcast.to(user.room).emit('connected-users', users.getPersonsByRoom(user.room));
+        socketClient.broadcast.to(user.room).emit('send-message', message('Administrator', `${user.name} joined the chat!`));
         callback(users.getPersonsByRoom(user.room));
 
-        console.log('PERSONS'.brightWhite, users.persons);
+        // console.log('PERSONS'.brightWhite, users.persons);
     });
+
     socketClient.on('send-message', (data, callback) => {
         const user = users.getPerson(socketClient.id);
         // let msg = message(data.name, data.msg);
@@ -37,9 +39,9 @@ io.on('connect', socketClient => { // "connection" event
 
     socketClient.on('disconnect', () => {
         const deletedPerson = users.deletePerson(socketClient.id);
-        socketClient.broadcast.to(deletedPerson.room).emit('send-message', message('administrator', `${deletedPerson.name} left the chat..`));
+        socketClient.broadcast.to(deletedPerson.room).emit('send-message', message('Administrator', `${deletedPerson.name} left the chat..`));
         socketClient.broadcast.to(deletedPerson.room).emit('connected-users', users.getPersonsByRoom(deletedPerson.room));
-        console.log('DELETED '.bgWhite.black, deletedPerson);
+        // console.log('DELETED '.bgWhite.black, deletedPerson);
         // console.log('Diconnected client'.brightWhite, socketClient.id);
     });
 

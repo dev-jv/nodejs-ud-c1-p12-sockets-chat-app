@@ -9,8 +9,7 @@ let txtMessage = $('#txtMessage');
 let divChatbox = $('#divChatbox');
 
 const renderUsers = (persons) => {
-    console.log(persons);
-
+    // console.log(persons);
     let html = '';
 
     html += '<li>';
@@ -25,21 +24,58 @@ const renderUsers = (persons) => {
     divUsers.html(html);
 };
 
-const renderMessages = (message) => {
-    console.log(message);
-
+const renderMessages = (message, to) => { // to: myself / everyone
+    // console.log(message);
     let html = '';
 
-    html += '<li>';
-    html += '<div class="chat-img"><img src="assets/images/users/1.jpg" alt="user" /></div>';
-    html += '<div class="chat-content">';
-    html += '   <h5>' + message.name + '</h5>';
-    html += '   <div class="box bg-light-info">' + message.msg + '</div>';
-    html += '</div>';
-    html += '<div class="chat-time">' + message.date + '</div>';
-    html += '</li>';
+    let date = new Date(message.date);
+    let hour = date.getHours() + ':' + date.getMinutes();
 
-    divChatbox.append(html);
+    let adminClass = 'info';
+    if(message.name === 'Administrator') {
+        adminClass = 'danger';
+    }
+
+    if(to === 'myself') {
+        html += '<li class="reverse">';
+        html += '<div class="chat-content">';
+        html += '   <h5>' + message.name + '</h5>';
+        html += '   <div class="box bg-light-inverse">' + message.msg + '</div>';
+        html += '</div>';
+        html += '<div class="chat-img"><img src="assets/images/users/5.jpg" alt="user" /></div>';
+        html += '<div class="chat-time">' + hour + '</div>';
+        html += '</li>';
+
+        divChatbox.append(html);
+    } else {
+        html += '<li>';
+        if(message.name !== 'Administrator') {
+            html += '<div class="chat-img"><img src="assets/images/users/1.jpg" alt="user" /></div>';
+        }
+        html += '<div class="chat-content">';
+        html += '   <h5>' + message.name + '</h5>';
+        html += '   <div class="box bg-light-' + adminClass +'">' + message.msg + '</div>';
+        html += '</div>';
+        html += '<div class="chat-time">' + hour + '</div>';
+        html += '</li>';
+
+        divChatbox.append(html);
+    }
+};
+
+const scrollBottom = () => {
+
+    let newMessage = divChatbox.children('li:last-child');
+
+    let clientHeight = divChatbox.prop('clientHeight');
+    let scrollTop = divChatbox.prop('scrollTop');
+    let scrollHeight = divChatbox.prop('scrollHeight');
+    let newMessageHeight = newMessage.innerHeight();
+    let lastMessageHeight = newMessage.prev().innerHeight() || 0;
+
+    if (clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
+        divChatbox.scrollTop(scrollHeight);
+    }
 };
 
 divUsers.on('click', 'a', function() { // ... =>
@@ -50,7 +86,7 @@ divUsers.on('click', 'a', function() { // ... =>
     }
 });
 
-formSend.on('submit', function (e) {
+formSend.on('submit', (e) => {
     e.preventDefault();
 
     if(txtMessage.val().trim().length === 0) {
@@ -61,12 +97,10 @@ formSend.on('submit', function (e) {
         name,
         msg: txtMessage.val()
     }, (x) => {
-        console.log('Server: ', x);
+        // console.log('Server: ', x);
         txtMessage.val('').focus();
-        renderMessages(x);
+        renderMessages(x, 'myself');
+        scrollBottom();
     });
-
-    console.log(txtMessage.val());
+    // console.log(txtMessage.val());
 });
-
-

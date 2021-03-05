@@ -40,7 +40,8 @@ socket.on('diconnect', () => {
 
 socket.on('send-message', x => {
     // console.log('Server: ', x);
-    renderMessages(x);
+    renderMessages(x, 'everyone');
+    scrollBottom();
 });
 
 socket.on('connected-users', (x) => {

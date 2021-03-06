@@ -22,10 +22,15 @@ io.on('connect', socketClient => { // "connection" event
         socketClient.join(user.room);
 
         users.addPerson(socketClient.id, user.name, user.room);
-        socketClient.broadcast.to(user.room).emit('connected-users', users.getPersonsByRoom(user.room));
+
+        const data = {
+            lst: users.getPersonsByRoom(user.room),
+            dlt: ''
+        };
+
+        socketClient.broadcast.to(user.room).emit('connected-users', data);
         socketClient.broadcast.to(user.room).emit('send-message', message('Administrator', `${user.name} joined the chat!`));
         callback(users.getPersonsByRoom(user.room));
-
         // console.log('PERSONS'.brightWhite, users.persons);
     });
 
@@ -40,7 +45,13 @@ io.on('connect', socketClient => { // "connection" event
     socketClient.on('disconnect', () => {
         const deletedPerson = users.deletePerson(socketClient.id);
         socketClient.broadcast.to(deletedPerson.room).emit('send-message', message('Administrator', `${deletedPerson.name} left the chat..`));
-        socketClient.broadcast.to(deletedPerson.room).emit('connected-users', users.getPersonsByRoom(deletedPerson.room));
+
+        const data = {
+            lst: users.getPersonsByRoom(deletedPerson.room),
+            dlt: deletedPerson
+        };
+
+        socketClient.broadcast.to(deletedPerson.room).emit('connected-users', data);
         // console.log('DELETED '.bgWhite.black, deletedPerson);
         // console.log('Diconnected client'.brightWhite, socketClient.id);
     });

@@ -4830,25 +4830,57 @@ File: scss
         margin-bottom: 10px;
         color: #263238; }
     .chat-list li .chat-time {
-      display: inline-block;
-      text-align: right;
-      width: 80px;
-      font-size: 13px;
-      color: #99abb4; }
-    .chat-list li.odd .chat-content {
-      text-align: right;
-      width: calc(100% - 90px); }
-    .chat-list li.odd .box {
-      clear: both; }
-    .chat-list li.odd + .odd {
-      margin-top: 0px; }
+    /*  display: grid;*/
+    /*  text-align: left;*/
+    /*  width: 80px;*/
+      font-size: 10px;
+    /*  color: #99abb4; */
+    }
+
+    /*.chat-list li.odd .chat-content {*/
+    /*  text-align: right;*/
+    /*  width: calc(100% - 90px); }*/
+    /*.chat-list li.odd .box {*/
+    /*  clear: both; }*/
+    /*.chat-list li.odd + .odd {*/
+    /*  margin-top: 0px; }*/
+
+
     .chat-list li.reverse {
       text-align: right; }
-      .chat-list li.reverse .chat-time {
-        text-align: left; }
+
       .chat-list li.reverse .chat-content {
         padding-left: 0px;
         padding-right: 15px; }
+
+      .chat-list li.reverse .chat-content h5 {
+        color: #99abb4;
+      }
+
+      .chat-list li.reverse .chat-content .box {
+        display: inline-block;
+        margin-bottom: 10px;
+        color: #263238;
+      }
+
+      .chat-list li.reverse .chat-img {
+        display: inline-block;
+        width: 45px;
+        vertical-align: top;
+      }
+
+      .chat-list li.reverse .chat-img img{
+        width: 45px;
+        border-radius: 100%;
+      }
+
+      .chat-list li.reverse .chat-time {
+      /*  text-align: left;*/
+      /*  display: inline-block;*/
+      /*  width: 80px;*/
+        font-size: 10px;
+      /*  color: #99abb4; */
+      }
 
 /*******************/
 /*Chat widget*/

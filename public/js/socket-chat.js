@@ -18,6 +18,7 @@ socket.on('connect', () => {
     socket.emit('join-to-chat', user, (x) => {
         // console.log('Connected users', x);
         renderUsers(x);
+        renderRoom(x[0]);
     });
 });
 
@@ -46,7 +47,7 @@ socket.on('send-message', x => {
 
 socket.on('connected-users', (x) => {
     // console.log('Connected users: ', x);
-    renderUsers(x);
+    renderUsers(x.lst, x.dlt);
 });
 
 socket.on('private-message', (x) => {
